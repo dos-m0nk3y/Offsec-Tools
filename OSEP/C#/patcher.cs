@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 
-public static class MemoryPatcher
+public class MemoryPatcher
 {
-    public static void PatchMemory(IntPtr baseAddress, byte[] patch)
+    private static void PatchMemory(IntPtr baseAddress, byte[] patch)
     {
         IntPtr processHandle = new IntPtr(-1);
         UInt32 NumberOfBytesToProtect = (UInt32)patch.Length;

